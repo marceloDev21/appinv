@@ -1,0 +1,73 @@
+<div class="flex flex-column m-3">
+
+    <p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+
+     <p-toast position="top-right" key="bc"></p-toast>
+
+    <div  class="grid p-fluid pl-3 pr-3 align-items-center justify-content-between">
+        <div class="col-12 md:col-10 flex justify-content-center md:justify-content-between">
+            <h1>{{title}}</h1>
+        </div>
+    </div>
+
+    <div class="p-3">
+        <p-table #dt1 [value]="posses" responsiveLayout="scroll" [paginator]="true" [rows]="12"
+            [totalRecords]="totalDeRegistros" [loading]="load" [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[12,24,36]"
+            currentPageReportTemplate="Registros {first} de {last} - Total {totalRecords} registros"
+            [globalFilterFields]="['pessoa.nome', 'pessoa.cargo', 'patrimonio.nome', 'patrimonio.codigo']" dataKey="id">
+
+            <ng-template pTemplate="caption">
+                <span class="flex flex-column md:flex-row align-items-center justify-content-between gap-3">
+                    <div>
+                        Lista de posses
+                    </div>
+                    <div class="flex flex-column md:flex-row gap-3">
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #filtrado
+                                (input)="dt1.filterGlobal(filtrado.value, 'contains')" placeholder="Procurar" />
+                        </span>
+                        <button pButton label="limpar" class="p-button-outlined" icon="pi pi-filter-slash"
+                            (click)="clear(dt1)"></button>
+                    </div>
+                </span>
+            </ng-template>
+            <ng-template pTemplate="header" let-posse>
+                <tr>
+                    <th field="id">#</th>
+                    <th field="pessoa.nome">Nome</th>
+                    <th field="pessoa.cargo">Cargo</th>
+                    <th field="patrimonio.nome">Patrimônio</th>
+                    <th field="patrimonio.codigo">Patrimônio código</th>
+                    <th>Ações</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-posse>
+                <tr>
+
+                    <td><span class="p-column-title">Id: </span>{{ posse.id }}</td>
+                    <td><span class="p-column-title">Nome: </span>{{ posse.pessoa.nome }}</td>
+                    <td><span class="p-column-title">Cargo: </span>{{ posse?.pessoa?.cargo }}</td>
+                    <td><span class="p-column-title">Patrimônio: </span>{{ posse?.patrimonio?.nome }}</td>
+                    <td><span class="p-column-title">Patrimônio código: </span>{{ posse?.patrimonio?.codigo }}</td>
+
+                    <td><span class="p-column-title">Ações: </span>
+                        <div class="flex gap-2">
+                            <button class="p-button-outlined" pButton icon="pi pi-fw pi-eye"
+                                [routerLink]="['/posses', posse.id]"></button>
+                            <button class="p-button-danger" pButton icon="pi pi-fw pi-trash"
+                                (click)="onDelete(posse.id)"></button>
+                        </div>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="6">posses não encontrados.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+</div>

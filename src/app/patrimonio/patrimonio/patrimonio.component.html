@@ -1,0 +1,260 @@
+<div class="flex flex-column m-3">
+    <!-- {{patrimonio | json}} -->
+    <p-toast position="top-right" key="bc"></p-toast>
+    <p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+
+    <div class="grid p-fluid p-1 align-items-center justify-content-between">
+        <div class="col-12 md:col-10 flex justify-content-center md:justify-content-between">
+            <h1 class="text-2xl md:text-3xl">{{titulo}}</h1>
+        </div>
+        <div class="col-12 md:col-2 ">
+            <button pButton (click)="voltar()" icon="pi pi-fw pi-arrow-left" label="Voltar"></button>
+        </div>
+    </div>
+
+    <form autocomplete="off" #f="ngForm" (ngSubmit)="salvar()" class="grid p-float">
+
+        <span class="col-12 md:col-12 flex flex-column">
+            <label for="nome">Nome</label>
+            <input pInputText name="nome" required [(ngModel)]="patrimonio.nome" #nome="ngModel" [ngClass]="{
+            'ng-invalid ng-dirty':
+              f.submitted && nome.invalid && (nome.dirty || nome.touched)
+          }" />
+        </span>
+
+        <div class="col-12 md:col-3 flex flex-column">
+            <label for="codigo">Codigo</label>
+            <p-inputMask mask="999999" name="codigo" [(ngModel)]="patrimonio.codigo" value="000000" #codigo="ngModel"
+                placeholder="000000" [ngClass]="{
+                'ng-invalid ng-dirty':
+                  f.submitted && codigo.invalid && (codigo.dirty || codigo.touched)
+              }"></p-inputMask>
+        </div>
+
+        <div class="col-12 md:col-3 flex flex-column">
+            <label for="valor">Valor</label>
+
+            <p-inputNumber name="valor" [(ngModel)]="patrimonio.valor" #valor="ngModel" mode="decimal"
+                inputId="currency-br" mode="currency" currency="BRL" [showButtons]="true" [minFractionDigits]="2"
+                inputId="minmax-buttons" [min]="0.00" [max]="10000000">
+            </p-inputNumber>
+
+        </div>
+
+        <span class="col-12 md:col-3 flex flex-column">
+            <label for="situacao"> Situação </label>
+            <p-dropdown [options]="situacoes" [(ngModel)]="patrimonio.situacao" name="situacao" optionLabel="label"
+                optionValue="label" [filter]="true" filterBy="label" [showClear]="true"
+                placeholder="Selecione a situação">
+            </p-dropdown>
+        </span>
+
+        <span class="col-12 md:col-3 flex flex-column">
+            <label for="tipo"> Tipo </label>
+            <p-dropdown [options]="tipos" [(ngModel)]="patrimonio.tipo" name="tipo" optionLabel="tipo" [filter]="true"
+                filterBy="tipo" [showClear]="true" placeholder="Selecione o tipo de item"
+                emptyMessage="Não há nada para ver aqui">
+                <ng-template let-tipo pTemplate="item">
+                    <div>
+                        <div>{{ tipo.tipo }}</div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="selectedItem" let-tipo>
+                    <div>{{ tipo.tipo }}</div>
+                </ng-template>
+            </p-dropdown>
+        </span>
+
+        <span class="col-12 md:col-3 flex flex-column">
+            <label for="responsavel"> Responsável </label>
+            <p-dropdown [options]="responsaveis" [(ngModel)]="patrimonio.responsavel" name="responsavel"
+                optionLabel="nome" [filter]="true" filterBy="nome" [showClear]="true"
+                placeholder="Selecione o responsável" emptyMessage="Não há nada para ver aqui">
+                <ng-template let-responsavel pTemplate="item">
+                    <div>
+                        <div>{{ responsavel.nome }}</div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="selectedItem" let-responsavel>
+                    <div>{{ responsavel.nome }}</div>
+                </ng-template>
+            </p-dropdown>
+        </span>
+
+
+        <span class="col-12 md:col-3 flex flex-column">
+            <label for="departamento"> Departamento </label>
+            <p-dropdown [options]="departamentos" [(ngModel)]="patrimonio.departamento" name="departamento"
+                optionLabel="nome" [filter]="true" filterBy="nome" [showClear]="true"
+                placeholder="Selecione o departamento" emptyMessage="Não há nada para ver aqui">
+                <ng-template let-departamento pTemplate="item">
+                    <div>
+                        <div>{{ departamento.nome }}</div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="selectedItem" let-departamento>
+                    <div>{{ departamento.nome }}</div>
+                </ng-template>
+            </p-dropdown>
+        </span>
+
+        <span class="col-12 md:col-3 flex flex-column">
+            <label for="modelo"> Propriedade </label>
+            <p-dropdown [options]="propriedades" [(ngModel)]="patrimonio.propriedade" name="propriedade"
+                optionLabel="tipo" optionValue="propriedade" [filter]="true" filterBy="tipo" [showClear]="true"
+                placeholder="Selecione a propriedade" emptyMessage="Não há nada para ver aqui">
+                <ng-template let-propriedade pTemplate="item">
+                    <div>
+                        <div>{{ propriedade.tipo }} {{propriedade.fornecedor?.nomeEmpresa}}</div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="selectedItem" let-propriedade>
+                    <div>{{ propriedade.tipo }} {{ propriedade.fornecedor?.nomeEmpresa}}</div>
+                </ng-template>
+            </p-dropdown>
+        </span>
+
+        <div class="col-12 md:col-3 flex flex-column">
+            <label for="float-input">Data de Entrega</label>
+            <input id="float-input" type="date" [(ngModel)]="patrimonio.dt_entrega" name="entrega" pInputText
+                required />
+        </div>
+
+        <span class="col-12 md:col-12 flex flex-column">
+            <p-header>Obs do patrimonio:</p-header>
+            <textarea name="observacao" placeholder="observação" [(ngModel)]="patrimonio.observacao" pInputText required
+                class=""></textarea>
+        </span>
+
+        <p-panel header="Equipamentos" class="col-12">
+            <div class="grid p-fluid">
+                <span class="col-12 md:col-3 flex flex-column gap-2">
+                    <label for="modelo"> Serie/Modelo/Marca</label>
+                    <p-dropdown [options]="equipamentos" [(ngModel)]="patrimonio.especificacoes" name="especificacoes"
+                        optionLabel="serie"  [filter]="true" filterBy="serie"
+                        [showClear]="true" placeholder="Selecione o especificacoes" emptyMessage="Não há nada para ver aqui">
+                        <ng-template let-especificacoes pTemplate="item">
+                            <div>
+                                <div>{{ especificacoes.serie }} {{ especificacoes.modelo?.nome }} {{ especificacoes.marca?.nome}}
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="selectedItem" let-especificacoes>
+                            <div>{{ especificacoes.serie }} {{ especificacoes.modelo?.nome }} {{ especificacoes.marca?.nome}}
+                            </div>
+                        </ng-template>s
+                    </p-dropdown>
+                </span>
+            </div>
+        </p-panel>
+
+        <p-panel header="Posse" class="col-12">
+            <div class="grid p-fluid">
+                <span class="col-12 md:col-3 flex flex-column">
+                    <label for="pessoa"> Pessoa </label>
+                    <p-dropdown [options]="pessoas" [(ngModel)]="posse.pessoa" name="pessoa" optionLabel="nome"
+                        [filter]="true" filterBy="nome" [showClear]="true" placeholder="Selecione a pessoa"
+                        emptyMessage="Não há nada para ver aqui">
+                    </p-dropdown>
+                </span>
+
+                <div class="col-12 md:col-3 flex flex-column">
+                    <label for="dt_inicio">Data Inicio</label>
+                    <input pInputText type="date" inputId="inicio" name="Inicio" [(ngModel)]="posse.dtInicio"
+                        #dtInicio="ngModel" [ngClass]="{
+                'ng-invalid ng-dirty':
+                  f.submitted &&
+                  dtInicio.invalid &&
+                  (dtInicio.dirty || dtInicio.touched)
+              }" />
+                </div>
+
+                <div class="col-12 md:col-3 flex flex-column">
+                    <label for="dt_fim">Data Fim</label>
+                    <input pInputText type="date" name="dtFim" [(ngModel)]="posse.dtFim" #dtFim="ngModel" [ngClass]="{
+                'ng-invalid ng-dirty':
+                  f.submitted &&
+                  dtFim.invalid &&
+                  (dtFim.dirty || dtFim.touched)
+              }" />
+                </div>
+
+                <div class="col-12 md:col-12 flex flex-column">
+                    <label for="obs">Observação</label>
+                    <textarea pInputTextarea name="obs" [(ngModel)]="posse.observacao" #obs="ngModel" [ngClass]="{
+                        'ng-invalid ng-dirty':
+                        f.submitted &&
+                        obs.invalid &&
+                        (obs.dirty || obs.touched)
+                    }"></textarea>
+
+                </div>
+                <div class="col-12 md:col-12 flex justify-content-end">
+                    <label>&nbsp;</label>
+                    <button pButton type="button" label="Add" icon="pi pi-fw pi-check" (click)="inserirItem()"></button>
+                </div>
+            </div>
+            <p-table [value]="patrimonio.posse" responsiveLayout="stack" edi>
+                <ng-template pTemplate="caption">
+                    <span>
+                        <h4>Lista de Posses</h4>
+                        <p class="font-italic text-sm">*Clique no espaço Data fim para edita-lo.</p>
+                    </span>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Cargo</th>
+                        <th>Data inicio</th>
+                        <th>Data fim</th>
+                        <th>Observação</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-columns="columns">
+
+                    <tr>
+                        <td>
+                            <span class="p-column-title">Nome: </span>{{ item.pessoa.nome }}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Cargo: </span>{{ item.pessoa.cargo }}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Data inicio: </span>{{ item?.dtInicio | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td pEditableColumn class="w-3">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="date" name="dtFim" [(ngModel)]="item.dtFim" #dtFim="ngModel"
+                                        [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                          f.submitted &&
+                                          dtFim.invalid &&
+                                          (dtFim.dirty || dtFim.touched)
+                                      }" />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{item.dtFim | date: 'dd/MM/yyyy'}}
+                                </ng-template>
+                            </p-cellEditor>
+
+                            <!-- <span class="p-column-title">Data fim: </span>{{ item?.dtFim | date: 'dd/MM/yyyy' }} -->
+                        </td>
+                        <td>
+                            <span class="p-column-title">Observação: </span>{{ item?.observacao }}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="10">Nenhuma posse lançada.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-panel>
+        <div class="col-12 md:col-12 flex">
+            <button class="p-button-success col-12 md:col-12 p-3" pButton label="Salvar"
+                icon="pi pi-fw pi-save"></button>
+        </div>
+    </form>
+</div>

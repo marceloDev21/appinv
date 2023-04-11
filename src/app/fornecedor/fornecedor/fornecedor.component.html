@@ -1,0 +1,45 @@
+<div class="flex flex-column m-3">
+    <p-toast position="top-right" key="bc"></p-toast>
+    <p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+
+    <div class="grid p-fluid pl-3 pr-3 align-items-center justify-content-between">
+        <div class="col-12 md:col-10 flex justify-content-center md:justify-content-between">
+            <h1 class="text-2xl md:text-3xl">{{titulo}}</h1>
+        </div>
+        <div class="col-12 md:col-2 ">
+            <button pButton (click)="voltar()" icon="pi pi-fw pi-arrow-left" label="Voltar"></button>
+        </div>
+    </div>
+    <form autocomplete="off" #f="ngForm" (ngSubmit)="salvar()" class="grid p-float p-3">
+        <span class="col-12 md:col-12 flex flex-column">
+            <label for="nome">Nome</label>
+            <input pInputText name="nome" required [(ngModel)]="fornecedor.nomeEmpresa" #nome="ngModel"
+                [ngClass]="{ 'ng-invalid ng-dirty': f.submitted && nome.invalid && (nome.dirty || nome.touched) }">
+        </span>
+
+        <span class="col-12 md:col-5 flex flex-column">
+            <label for="cnpj">CNPJ</label>
+            <input pInputText name="cnpj" required [(ngModel)]="fornecedor.cnpj" #cnpj="ngModel"
+                [ngClass]="{ 'ng-invalid ng-dirty': f.submitted && cnpj.invalid && (cnpj.dirty || cnpj.touched) }">
+        </span>
+
+        <span class="col-12 md:col-4 flex flex-column">
+            <label for="email">Email</label>
+            <input pInputText name="email" type="email" required [(ngModel)]="fornecedor.email" #email="ngModel"
+                [ngClass]="{ 'ng-invalid ng-dirty': f.submitted && email.invalid && (email.dirty || email.touched) }">
+        </span>
+
+        <span class="col-12 md:col-3 flex flex-column">
+            <label for="telefone">Telefone</label>
+            <input pInputText name="telefone" type="telefone" required [(ngModel)]="fornecedor.telefone"
+                #telefone="ngModel"
+                [ngClass]="{ 'ng-invalid ng-dirty': f.submitted && telefone.invalid && (telefone.dirty || telefone.touched) }">
+        </span>
+
+        <div class="col-12 md:col-12 flex">
+            <button class="p-button-success col-12 md:col-12 p-3" pButton label="Salvar"
+                icon="pi pi-fw pi-save"></button>
+            <!-- [disabled]="!f.valid" -->
+        </div>
+    </form>
+</div>

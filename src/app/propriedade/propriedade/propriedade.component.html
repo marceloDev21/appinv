@@ -1,0 +1,38 @@
+<div class="flex flex-column m-3">
+    <p-toast key="bc" position="top-right"></p-toast>
+    <p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+
+    <div class="grid p-fluid pl-3 pr-3 align-items-center justify-content-between">
+        <div class="col-12 md:col-10 flex justify-content-center md:justify-content-between">
+            <h1 class="text-2xl md:text-3xl">{{titulo}}</h1>
+        </div>
+        <div class="col-12 md:col-2 ">
+            <button pButton (click)="voltar()" icon="pi pi-fw pi-arrow-left" label="Voltar"></button>
+        </div>
+    </div>
+
+    <form autocomplete="off" #f="ngForm" (ngSubmit)="salvar()" class="grid p-float p-3">
+
+        <span class="col-12 md:col-4 flex flex-column gap-2">
+            <label for="tipo">Tipo</label>
+            <p-dropdown [options]="tipos" [(ngModel)]="propriedade.tipo" name="tipo" optionLabel="label"
+                optionValue="label" [filter]="true" filterBy="label" [showClear]="true"
+                placeholder="Selecione o tipo de propriedade" emptyMessage="Não há nada para ver aqui"
+                #fornecedor="ngModel">
+            </p-dropdown>
+        </span>
+
+        <span class="col-12 md:col-3 flex flex-column gap-2">
+            <label for="fornecedor">Fornecedor</label>
+            <p-dropdown [options]="fornecedores" [(ngModel)]="propriedade.fornecedor" name="fornecedor"
+                optionLabel="nomeEmpresa" [filter]="true" filterBy="nomeEmpresa" [showClear]="true"
+                placeholder="Selecione o fornecedor" emptyMessage="Não há nada para ver aqui" #fornecedor="ngModel">
+            </p-dropdown>
+        </span>
+
+        <div class="col-12 md:col-12 flex">
+            <button class="p-button-success col-12 md:col-12 p-3" pButton label="Salvar"
+                icon="pi pi-fw pi-save"></button>
+            <!-- [disabled]="!f.valid" -->
+        </div>
+    </form>

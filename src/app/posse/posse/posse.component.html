@@ -1,0 +1,56 @@
+<div class="flex flex-column m-3">
+    <p-toast key="bc" position="top-right"></p-toast>
+    <p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+
+    <div class="grid p-fluid pl-3 pr-3 align-items-center justify-content-between">
+        <div class="col-12 md:col-10 flex justify-content-center md:justify-content-between">
+            <h1 class="text-2xl md:text-3xl">{{titulo}}</h1>
+        </div>
+        <div class="col-12 md:col-2 ">
+            <button pButton (click)="voltar()" icon="pi pi-fw pi-arrow-left" label="Voltar"></button>
+        </div>
+    </div>
+<form class="grid p-3 m-0">
+
+    <div class="col-12 md:col-3 flex flex-column">
+        <label for="float-input">Pessoa</label>
+        <input id="float-input" type="text" [(ngModel)]="posse.pessoa.nome" name="pessoa" pInputText disabled>
+    </div>
+
+    <div class="col-12 md:col-3 flex flex-column">
+        <label for="float-input">Data Inicio</label>
+        <input id="float-input" type="date" [(ngModel)]="posse.dtInicio" name="inicio" pInputText disabled>
+    </div>
+    <div class="col-12 md:col-3 flex flex-column">
+        <label for="float-input">Data Entrega</label>
+        <input id="float-input" type="date" [(ngModel)]="posse.dtFim" name="fim" pInputText disabled>
+    </div>
+    <span class="col-12 md:col-12 flex flex-column">
+        <p-header>Obs de posse:</p-header>
+        <textarea name="observacao" placeholder="observação" [(ngModel)]="posse.observacao" pInputText
+        disabled></textarea>
+    </span>
+    <p-panel header="Patrimônio" class="col-12 md:col-12">
+        <span class="flex">
+            <div class="col-12 md:col-3 flex flex-column">
+                <label for="float-input">Nome</label>
+                <input id="float-input" type="text" disabled [(ngModel)]="posse.patrimonio.nome" name="nome" pInputText>
+            </div>
+            <div class="col-12 md:col-3 flex flex-column">
+                <label for="float-input">Código</label>
+                <input id="float-input" type="text" disabled [(ngModel)]="posse.patrimonio.codigo" name="codigo"
+                    pInputText>
+            </div>
+            <div class="col-12 md:col-3 flex flex-column ">
+                <label for="float-input">Responsável</label>
+                <input id="float-input" type="text" disabled [(ngModel)]="posse.patrimonio.responsavel.nome"
+                    name="responsavel" pInputText>
+            </div>
+            <div class="col-12 md:col-3 flex flex-column ">
+                <label for="float-input">Departamento</label>
+                <input id="float-input" type="text" disabled [(ngModel)]="posse.patrimonio.departamento.nome"
+                    name="departamento" pInputText>
+            </div>
+        </span>
+    </p-panel>
+</form>

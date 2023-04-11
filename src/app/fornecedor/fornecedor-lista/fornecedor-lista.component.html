@@ -1,0 +1,76 @@
+<div class="flex flex-column m-3">
+
+    <p-toast position="top-right" key="bc"></p-toast>
+    <p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+    
+    <div  class="grid p-fluid pl-3 pr-3 align-items-center justify-content-between">
+        <div class="col-12 md:col-10 flex justify-content-center md:justify-content-between">
+            <h1>{{title}}</h1>
+        </div>
+        <div class="col-12 md:col-2 ">
+            <button class="p-button-success" pButton routerLink="/fornecedores/novo" icon="pi pi-fw pi-plus"
+                label="Novo"></button>
+        </div>
+    </div>
+
+    <div class="p-3">
+        <p-table #dt1 [value]="fornecedores" responsiveLayout="scroll" [paginator]="true" [rows]="12"
+            [totalRecords]="totalDeRegistros" [loading]="load" [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[12,24,36]"
+            currentPageReportTemplate="Registros {first} de {last} - Total {totalRecords} registros"
+            [globalFilterFields]="['nome', 'cnpj']" dataKey="id">
+            
+            <ng-template pTemplate="caption">
+                <span class="flex flex-column md:flex-row align-items-center justify-content-between gap-3">
+                    <div>
+                        Lista de fornecedores
+                    </div>
+                    <div class="flex flex-column md:flex-row gap-3">
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #filtrado
+                                (input)="dt1.filterGlobal(filtrado.value, 'contains')" placeholder="Procurar" />
+                        </span>
+                        <button pButton label="limpar" class="p-button-outlined" icon="pi pi-filter-slash"
+                            (click)="clear(dt1)"></button>
+                    </div>
+                </span>
+            </ng-template>
+            <ng-template pTemplate="header" let-fornecedor>
+                <tr>
+                    <th field="id">#</th>
+                    <th field="nome">Empresa</th>
+                    <th field="cnpj">CNPJ</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Ações</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-fornecedor>
+                <tr>
+
+                    <td><span class="p-column-title">Id: </span>{{ fornecedor.id }}</td>
+                    <td><span class="p-column-title">Nome: </span>{{ fornecedor.nomeEmpresa }}</td>
+                    <td><span class="p-column-title">CNPJ: </span>{{ fornecedor.cnpj }}</td>
+                    <td><span class="p-column-title">Email: </span>{{ fornecedor.email }}</td>
+                    <td><span class="p-column-title">Telefone: </span>{{ fornecedor.telefone }}</td>
+
+                    <td><span class="p-column-title">Ações: </span>
+                        <div class="flex gap-2">
+                            <button class="p-button-success" pButton icon="pi pi-fw pi-pencil"
+                                [routerLink]="['/fornecedores', fornecedor.id]"></button>
+                            <button class="p-button-danger" pButton icon="pi pi-fw pi-trash"
+                                (click)="onDelete(fornecedor.id)"></button>
+                        </div>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7">Fornecedores não encontrados.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+</div>
